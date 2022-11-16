@@ -1,0 +1,72 @@
+USE [Prueba Promerica Canje]
+
+--CREACIÓN DE TABLAS
+CREATE TABLE Tipo
+(
+	Id INT IDENTITY(1,1) PRIMARY KEY,
+	Tipo VARCHAR(60)
+)
+
+CREATE TABLE Subtipo
+(
+	Id INT IDENTITY(1,1) PRIMARY KEY,
+	Subtipo VARCHAR(60)
+)
+
+CREATE TABLE Promocion
+(
+	Id INT IDENTITY(1,1) PRIMARY KEY,
+	Promocion VARCHAR(100),
+	FechaInicio DATE,
+	FechaFin DATE
+)
+
+CREATE TABLE Sucursal
+(
+	Id INT IDENTITY(1,1) PRIMARY KEY,
+	Sucursal VARCHAR(150)
+)
+
+CREATE TABLE Cliente
+(
+	Id INT IDENTITY(1,1) PRIMARY KEY,
+	Nombre VARCHAR(100),
+	Direccion VARCHAR(200),
+	CUI DECIMAL(13,0)
+)
+
+CREATE TABLE Articulo
+(
+	Id INT IDENTITY(1,1) PRIMARY KEY,
+	IdTipo INT FOREIGN KEY REFERENCES Tipo(id),
+	IdSubtipo INT FOREIGN KEY REFERENCES Subtipo(id),
+	Articulo VARCHAR(80),
+	Codigo VARCHAR(20)
+)
+
+CREATE TABLE DetallePromocion
+(
+	IdDetalle INT IDENTITY(1,1) PRIMARY KEY,
+	IdPromocion INT FOREIGN KEY REFERENCES Promocion(Id),
+	IdArticulo INT FOREIGN KEY REFERENCES Articulo(Id),
+	CostoPuntos DECIMAL(8,2),
+	PrecioArticulo DECIMAL(8,2)
+)
+
+CREATE TABLE ExistenciaSucursal
+(
+	Id INT IDENTITY(1,1) PRIMARY KEY,
+	IdSucursal INT FOREIGN KEY REFERENCES Sucursal(Id),
+	IdArticulo INT,
+	Cantidad INT
+)
+
+CREATE TABLE CANJE
+(
+	Id INT IDENTITY(1,1) PRIMARY KEY,
+	IdCliente INT FOREIGN KEY REFERENCES Cliente(Id),
+	IdDetallePromocion INT FOREIGN KEY REFERENCES DetallePromocion(IdDetalle),
+	Fecha DATE,
+	Observaciones VARCHAR(250),
+	IdSucursal INT FOREIGN KEY REFERENCES Sucursal(Id)
+)
